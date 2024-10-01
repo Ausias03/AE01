@@ -18,7 +18,9 @@ public class Vista extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private JTextField textField;
+	private JTextField txtBusDir;
+	private JButton btnBusSubFiles;
+	private JTextArea txaMostraSubfitxers;
 	private JTextField txtParBus;
 	private JTextField txtParRem;
 
@@ -54,18 +56,18 @@ public class Vista extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lblDirBus = new JLabel("Escriu el directori a buscar:");
-		lblDirBus.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		lblDirBus.setBounds(40, 11, 231, 48);
-		contentPane.add(lblDirBus);
+		JLabel lblBusDir = new JLabel("Escriu el directori a buscar:");
+		lblBusDir.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblBusDir.setBounds(40, 11, 231, 48);
+		contentPane.add(lblBusDir);
 		
-		textField = new JTextField();
-		textField.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		textField.setBounds(40, 59, 461, 28);
-		contentPane.add(textField);
-		textField.setColumns(10);
+		txtBusDir = new JTextField();
+		txtBusDir.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		txtBusDir.setBounds(40, 59, 461, 28);
+		contentPane.add(txtBusDir);
+		txtBusDir.setColumns(10);
 		
-		JButton btnBusSubFiles = new JButton("Buscar subfitxers");
+		btnBusSubFiles = new JButton("Buscar subfitxers");
 		btnBusSubFiles.setBackground(new Color(187, 250, 255));
 		btnBusSubFiles.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btnBusSubFiles.setBounds(40, 98, 148, 33);
@@ -75,7 +77,7 @@ public class Vista extends JFrame {
 		scrollPane.setBounds(40, 149, 588, 180);
 		contentPane.add(scrollPane);
 		
-		JTextArea txaMostraSubfitxers = new JTextArea();
+		txaMostraSubfitxers = new JTextArea();
 		scrollPane.setViewportView(txaMostraSubfitxers);
 		
 		JLabel lblParBus = new JLabel("Paraula a buscar:");
@@ -121,5 +123,17 @@ public class Vista extends JFrame {
 		contentPane.add(btnParRem);
 		
 		setVisible(true);
+	}
+	
+	public JTextField getTxtBusDir() {
+		return txtBusDir;
+	}
+	
+	public JButton getBtnBusSubFiles() {
+		return btnBusSubFiles;
+	}
+	
+	public JTextArea getTxaMostraSubfitxers() {
+		return txaMostraSubfitxers;
 	}
 }

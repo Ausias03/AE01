@@ -1,5 +1,11 @@
 package main;
 
-public class Model {
+import java.io.File;
 
+public class Model {
+	
+//	public String getEstructuraFitxers(File rutaDir) {
+//		
+//	}
+	
 }
