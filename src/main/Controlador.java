@@ -27,7 +27,7 @@ public class Controlador {
 					JOptionPane.showMessageDialog(null, "El directori introduït no existix", "ACTION BUTTON SEARCH",
 							JOptionPane.INFORMATION_MESSAGE);
 				} else {
-//					vista.getTxaMostraSubfitxers().setText(model.getEstructuraFitxers(rutaDir));
+					vista.getTxaMostraSubfitxers().setText(model.getEstructuraFitxers(rutaDir));
 				}
 			}
 		});

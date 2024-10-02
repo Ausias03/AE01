@@ -78,6 +78,7 @@ public class Vista extends JFrame {
 		contentPane.add(scrollPane);
 		
 		txaMostraSubfitxers = new JTextArea();
+		txaMostraSubfitxers.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		scrollPane.setViewportView(txaMostraSubfitxers);
 		
 		JLabel lblParBus = new JLabel("Paraula a buscar:");
@@ -98,11 +99,11 @@ public class Vista extends JFrame {
 		contentPane.add(btnParBus);
 		
 		JCheckBox chkIgnorarMajus = new JCheckBox("Ignorar majúscules");
-		chkIgnorarMajus.setBounds(402, 345, 119, 28);
+		chkIgnorarMajus.setBounds(393, 345, 135, 28);
 		contentPane.add(chkIgnorarMajus);
 		
 		JCheckBox chkIgnorarAccents = new JCheckBox("Ignorar accents");
-		chkIgnorarAccents.setBounds(526, 345, 119, 28);
+		chkIgnorarAccents.setBounds(530, 345, 119, 28);
 		contentPane.add(chkIgnorarAccents);
 		
 		JLabel lblParRem = new JLabel("Paraula a reemplaçar:");
