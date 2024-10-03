@@ -60,6 +60,12 @@ public class Model {
 		return estructura;
 	}
 
+	private static char llevaAccents(char car) {
+		String charNormalitzat = Normalizer.normalize(car + "", Normalizer.Form.NFD);
+		charNormalitzat = charNormalitzat.replace("[\\p{InCombiningDiacriticalMarks}]", "");
+		return charNormalitzat.charAt(0);
+	}
+	
 	private static int trobaParaula(String word, String fileRoute, boolean caseSensitive, boolean respAccents) {
 		int numOfWords = 0;
 		try {
@@ -100,10 +106,4 @@ public class Model {
 		return numOfWords;
 	}
 	
-	private static char llevaAccents(char car) {
-		String charNormalitzat = Normalizer.normalize(car + "", Normalizer.Form.NFD);
-		charNormalitzat = charNormalitzat.replace("[\\p{InCombiningDiacriticalMarks}]", "");
-		return charNormalitzat.charAt(0);
-	}
-
 }
