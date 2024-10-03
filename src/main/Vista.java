@@ -20,9 +20,12 @@ public class Vista extends JFrame {
 	private JPanel contentPane;
 	private JTextField txtBusDir;
 	private JButton btnBusSubFiles;
+	private JButton btnParBus;
 	private JTextArea txaMostraSubfitxers;
 	private JTextField txtParBus;
 	private JTextField txtParRem;
+	private JCheckBox chkRespectarMajus;
+	private JCheckBox chkRespectarAccents;
 
 	/**
 	 * Launch the application.
@@ -49,7 +52,7 @@ public class Vista extends JFrame {
 	
 	public void initComponents() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 680, 480);
+		setBounds(100, 100, 695, 480);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -83,44 +86,44 @@ public class Vista extends JFrame {
 		
 		JLabel lblParBus = new JLabel("Paraula a buscar:");
 		lblParBus.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblParBus.setBounds(40, 345, 112, 28);
+		lblParBus.setBounds(30, 345, 112, 28);
 		contentPane.add(lblParBus);
 		
 		txtParBus = new JTextField();
 		txtParBus.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		txtParBus.setColumns(10);
-		txtParBus.setBounds(162, 346, 119, 28);
+		txtParBus.setBounds(152, 346, 102, 28);
 		contentPane.add(txtParBus);
 		
-		JButton btnParBus = new JButton("Buscar");
+		btnParBus = new JButton("Buscar");
 		btnParBus.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btnParBus.setBackground(new Color(187, 250, 255));
-		btnParBus.setBounds(293, 345, 87, 28);
+		btnParBus.setBounds(268, 345, 81, 28);
 		contentPane.add(btnParBus);
 		
-		JCheckBox chkIgnorarMajus = new JCheckBox("Ignorar majúscules");
-		chkIgnorarMajus.setBounds(393, 345, 135, 28);
-		contentPane.add(chkIgnorarMajus);
+		chkRespectarMajus = new JCheckBox("Respectar majúscules");
+		chkRespectarMajus.setBounds(363, 345, 154, 28);
+		contentPane.add(chkRespectarMajus);
 		
-		JCheckBox chkIgnorarAccents = new JCheckBox("Ignorar accents");
-		chkIgnorarAccents.setBounds(530, 345, 119, 28);
-		contentPane.add(chkIgnorarAccents);
+		chkRespectarAccents = new JCheckBox("Respectar accents");
+		chkRespectarAccents.setBounds(520, 345, 138, 28);
+		contentPane.add(chkRespectarAccents);
 		
 		JLabel lblParRem = new JLabel("Paraula a reemplaçar:");
 		lblParRem.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblParRem.setBounds(40, 390, 148, 28);
+		lblParRem.setBounds(30, 390, 148, 28);
 		contentPane.add(lblParRem);
 		
 		txtParRem = new JTextField();
 		txtParRem.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		txtParRem.setColumns(10);
-		txtParRem.setBounds(185, 391, 119, 28);
+		txtParRem.setBounds(175, 391, 119, 28);
 		contentPane.add(txtParRem);
 		
 		JButton btnParRem = new JButton("Reemplaçar");
 		btnParRem.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btnParRem.setBackground(new Color(187, 250, 255));
-		btnParRem.setBounds(319, 390, 112, 28);
+		btnParRem.setBounds(315, 390, 112, 28);
 		contentPane.add(btnParRem);
 		
 		setVisible(true);
@@ -130,11 +133,27 @@ public class Vista extends JFrame {
 		return txtBusDir;
 	}
 	
+	public JTextField getTxtParBus() {
+		return txtParBus;
+	}
+	
 	public JButton getBtnBusSubFiles() {
 		return btnBusSubFiles;
 	}
 	
+	public JButton getBtnParBus() {
+		return btnParBus;
+	}
+	
 	public JTextArea getTxaMostraSubfitxers() {
 		return txaMostraSubfitxers;
+	}
+	
+	public JCheckBox getChkRespectarMajus() {
+		return chkRespectarMajus;
+	}
+	
+	public JCheckBox getchkRespectarAccents() {
+		return chkRespectarAccents;
 	}
 }

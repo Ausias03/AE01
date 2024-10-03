@@ -32,5 +32,21 @@ public class Controlador {
 			}
 		});
 
+		vista.getBtnParBus().addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+
+				File rutaDir = new File(vista.getTxtBusDir().getText());
+				String paraula = vista.getTxtParBus().getText();
+
+				if (!rutaDir.exists()) {
+					JOptionPane.showMessageDialog(null, "El directori introduït no existix", "ACTION BUTTON SEARCH",
+							JOptionPane.INFORMATION_MESSAGE);
+				} else {
+					vista.getTxaMostraSubfitxers().setText(
+							model.getCoincidenciesFitxers(rutaDir, paraula, vista.getChkRespectarMajus().isSelected(),
+									vista.getchkRespectarAccents().isSelected()));
+				}
+			}
+		});
 	}
 }
