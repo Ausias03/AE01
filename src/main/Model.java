@@ -1,7 +1,9 @@
 package main;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.nio.charset.StandardCharsets;
 import java.text.Normalizer;
 import java.text.SimpleDateFormat;
 
@@ -42,19 +44,21 @@ public class Model {
 		return estructura;
 	}
 
-	private static String imprimixEstructura(File dir, int subNivell, 
-			String paraula, boolean caseSensitive, boolean respAccents) {
+	private static String imprimixEstructura(File dir, int subNivell, String paraula, boolean caseSensitive,
+			boolean respAccents) {
 		File[] subDirectoris = dir.listFiles();
 		String estructura = "";
 		for (int i = 0; i < subDirectoris.length; i++) {
 			if (subDirectoris[i].isDirectory()) {
 				if (subDirectoris[i].list().length != 0) {
 					estructura += imprimixEspais(subNivell) + "\\" + subDirectoris[i].getName() + "\r\n";
-					estructura += imprimixEstructura(subDirectoris[i], subNivell + 1, paraula, caseSensitive, respAccents);
+					estructura += imprimixEstructura(subDirectoris[i], subNivell + 1, paraula, caseSensitive,
+							respAccents);
 				}
 			} else {
 				estructura += imprimixEspais(subNivell) + subDirectoris[i].getName() + " ("
-						+ trobaParaula(paraula, subDirectoris[i].getAbsolutePath(), caseSensitive, respAccents) + " coincidències)" + "\r\n";
+						+ trobaParaula(paraula, subDirectoris[i].getAbsolutePath(), caseSensitive, respAccents)
+						+ " coincidències)" + "\r\n";
 			}
 		}
 		return estructura;
@@ -65,45 +69,61 @@ public class Model {
 		charNormalitzat = charNormalitzat.replace("[\\p{InCombiningDiacriticalMarks}]", "");
 		return charNormalitzat.charAt(0);
 	}
-	
-	private static int trobaParaula(String word, String fileRoute, boolean caseSensitive, boolean respAccents) {
-		int numOfWords = 0;
+
+	private static String retornaString(File fitxer) {
+		String textFitxer = "";
 		try {
-			FileReader fr = new FileReader(fileRoute);
-			int valor = fr.read();
-			char wordChar;
-			int indice = 0;
-
-			while (valor != -1) {
-				wordChar = word.charAt(indice);
-				if (!caseSensitive) {
-					valor = Character.toLowerCase((char) valor);
-					wordChar = Character.toLowerCase(wordChar);
-				}
-				
-				if (!respAccents) {
-					valor = llevaAccents((char) valor);
-					wordChar = llevaAccents(wordChar);
-				}
-
-				if ((char) valor == wordChar) {
-					indice++;
-				} else {
-					indice = 0;
-				}
-
-				if (indice == word.length()) {
-					numOfWords++;
-					indice = 0;
-				}
-				valor = fr.read();
+			FileReader fr = new FileReader(fitxer, StandardCharsets.UTF_8);
+			BufferedReader br = new BufferedReader(fr);
+			String linea = br.readLine();
+			while (linea != null) {
+				textFitxer += linea + System.lineSeparator();
+				linea = br.readLine();
 			}
-
+			br.close();
 			fr.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return numOfWords;
+		return textFitxer;
 	}
-	
+
+	private static int trobaParaula(String paraula, String fileRoute, boolean caseSensitive, boolean respAccents) {
+		String textFitxer = retornaString(new File(fileRoute));
+		
+		if (textFitxer.isEmpty())
+			return 0;
+		
+		int numCoincidencies = 0;
+		char charParaula;
+		char charText;
+		int indexLletra = 0;
+		for (int i = 0; i < textFitxer.length(); i++) {
+			charText = textFitxer.charAt(i);
+			charParaula = paraula.charAt(indexLletra);
+			
+			if (!caseSensitive) {
+				charText = Character.toLowerCase(charText);
+				charParaula = Character.toLowerCase(charParaula);
+			}
+			
+			if (!respAccents) {
+				charText = llevaAccents(charText);
+				charParaula = llevaAccents(charParaula);
+			}
+			
+			if (charText == charParaula) {
+				indexLletra++;
+			} else {
+				indexLletra = 0;
+			}
+			
+			if (indexLletra == paraula.length()) {
+				numCoincidencies++;
+				indexLletra = 0;
+			}
+		}
+		return numCoincidencies;
+	}
+
 }
