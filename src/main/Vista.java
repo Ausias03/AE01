@@ -13,6 +13,7 @@ import java.awt.Color;
 import javax.swing.JTextArea;
 import javax.swing.JScrollPane;
 import javax.swing.JCheckBox;
+import java.awt.Toolkit;
 
 public class Vista extends JFrame {
 
@@ -47,6 +48,8 @@ public class Vista extends JFrame {
 	 * Create the frame.
 	 */
 	public Vista() {
+		setTitle("AE01");
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Vista.class.getResource("/imgs/icon.png")));
 		initComponents();
 	}
 	
