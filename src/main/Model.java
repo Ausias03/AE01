@@ -3,12 +3,14 @@ package main;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.text.Normalizer;
 import java.text.SimpleDateFormat;
 
 import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.text.PDFTextStripper;
 
 public class Model {
 
@@ -90,9 +92,29 @@ public class Model {
 		}
 		return textFitxer;
 	}
+	
+	private static String retornaStringPDF(File fitxer) {
+		String textFitxer = "";
+		try {
+			PDDocument doc = Loader.loadPDF(fitxer);
+			PDFTextStripper pdfStripper = new PDFTextStripper();
+			textFitxer = pdfStripper.getText(doc);
+			doc.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return textFitxer;
+	}
+	
+	private static String getExtensioFitxer(File fitxer) {
+		String nom = fitxer.getName();
+		int ultimIndex = nom.lastIndexOf(".");
+		return ultimIndex == -1 ? "" : nom.substring(ultimIndex);
+	}
 
 	private static int trobaParaula(String paraula, String fileRoute, boolean caseSensitive, boolean respAccents) {
-		String textFitxer = retornaString(new File(fileRoute));
+		File fitxer = new File(fileRoute);
+		String textFitxer = getExtensioFitxer(fitxer).equals(".pdf") ? retornaStringPDF(fitxer) : retornaString(fitxer);
 		
 		if (textFitxer.isEmpty())
 			return 0;
