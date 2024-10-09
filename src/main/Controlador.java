@@ -42,9 +42,24 @@ public class Controlador {
 					JOptionPane.showMessageDialog(null, "El directori introduït no existix", "ACTION BUTTON SEARCH",
 							JOptionPane.INFORMATION_MESSAGE);
 				} else {
-					vista.getTxaMostraSubfitxers().setText(
-							model.getCoincidenciesFitxers(rutaDir, paraula, vista.getChkRespectarMajus().isSelected(),
-									vista.getchkRespectarAccents().isSelected()));
+					vista.getTxaMostraSubfitxers().setText(model.getCoincidenciesFitxers(rutaDir, paraula,
+							vista.getChkRespectarMajus().isSelected(), vista.getChkRespectarAccents().isSelected()));
+				}
+			}
+		});
+
+		vista.getBtnParRem().addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+
+				File rutaDir = new File(vista.getTxtBusDir().getText());
+				String paraula = vista.getTxtParBus().getText();
+				String parReemplacar = vista.getTxtParRem().getText();
+
+				if (!rutaDir.exists()) {
+					JOptionPane.showMessageDialog(null, "El directori introduït no existix", "ACTION BUTTON SEARCH",
+							JOptionPane.INFORMATION_MESSAGE);
+				} else {
+					vista.getTxaMostraSubfitxers().setText(model.getReemplacosFitxers(rutaDir, paraula, parReemplacar));
 				}
 			}
 		});
