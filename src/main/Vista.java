@@ -8,12 +8,13 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.JTextField;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import java.awt.Color;
 import javax.swing.JTextArea;
 import javax.swing.JScrollPane;
 import javax.swing.JCheckBox;
-import java.awt.Toolkit;
+import java.io.File;
 
 public class Vista extends JFrame {
 
@@ -49,7 +50,12 @@ public class Vista extends JFrame {
 	 */
 	public Vista() {
 		setTitle("AE01");
-		setIconImage(Toolkit.getDefaultToolkit().getImage(Vista.class.getResource("/imgs/icon.png")));
+		File icona = new File("resources/imgs/icon.png");
+	    if (icona.exists()) {
+	        setIconImage(new ImageIcon(icona.getAbsolutePath()).getImage());
+	    } else {
+	        System.out.println("Error, no s'ha pogut trobar la icona en la ruta especificada.");
+	    }
 		initComponents();
 	}
 	

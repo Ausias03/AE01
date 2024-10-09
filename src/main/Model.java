@@ -7,6 +7,9 @@ import java.nio.charset.StandardCharsets;
 import java.text.Normalizer;
 import java.text.SimpleDateFormat;
 
+import org.apache.pdfbox.Loader;
+import org.apache.pdfbox.pdmodel.PDDocument;
+
 public class Model {
 
 	public String getEstructuraFitxers(File rutaDir) {
