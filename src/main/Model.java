@@ -24,8 +24,8 @@ public class Model {
 		return rutaDir.getName() + "\r\n" + imprimixEstructura(rutaDir, 0, paraula, caseSensitive, respAccents);
 	}
 
-	public String getReemplacosFitxers(File rutaDir, String paraula, String reemplac) {
-		return rutaDir.getName() + "\r\n" + imprimixEstructura(rutaDir, 0, paraula, reemplac);
+	public String getReemplacosFitxers(File rutaDir, String paraula, String reemplac, boolean caseSensitive, boolean respAccents) {
+		return rutaDir.getName() + "\r\n" + imprimixEstructura(rutaDir, 0, paraula, reemplac, caseSensitive, respAccents);
 	}
 
 	private static String imprimixEspais(int subNivell) {
@@ -75,26 +75,26 @@ public class Model {
 		return estructura;
 	}
 
-	private static String imprimixEstructura(File dir, int subNivell, String paraula, String reemplac) {
+	private static String imprimixEstructura(File dir, int subNivell, String paraula, String reemplac, boolean caseSensitive, boolean respAccents) {
 		File[] subDirectoris = dir.listFiles();
 		String estructura = "";
 		for (int i = 0; i < subDirectoris.length; i++) {
 			if (subDirectoris[i].isDirectory()) {
 				if (subDirectoris[i].list().length != 0) {
 					estructura += imprimixEspais(subNivell) + "\\" + subDirectoris[i].getName() + "\r\n";
-					estructura += imprimixEstructura(subDirectoris[i], subNivell + 1, paraula, reemplac);
+					estructura += imprimixEstructura(subDirectoris[i], subNivell + 1, paraula, reemplac , caseSensitive, respAccents);
 				}
 			} else {
 				estructura += imprimixEspais(subNivell) + subDirectoris[i].getName() + " ("
-						+ reemplacaParaules(paraula, reemplac, subDirectoris[i].getAbsolutePath()) + " reemplaços)"
+						+ reemplacaParaulesFinal(paraula, reemplac, subDirectoris[i].getAbsolutePath(), caseSensitive, respAccents) + " reemplaços)"
 						+ "\r\n";
 			}
 		}
 		return estructura;
 	}
 
-	private static int trobaParaula(String paraula, String fileRoute, boolean caseSensitive, boolean respAccents) {
-		File fitxer = new File(fileRoute);
+	private static int trobaParaula(String paraula, String rutaFitxer, boolean caseSensitive, boolean respAccents) {
+		File fitxer = new File(rutaFitxer);
 		String textFitxer = getExtensioFitxer(fitxer).equals(".pdf") ? retornaStringPDF(fitxer) : retornaString(fitxer);
 
 		if (textFitxer.isEmpty())
@@ -132,19 +132,72 @@ public class Model {
 		return numCoincidencies;
 	}
 
-	private static int reemplacaParaules(String paraula, String reemplac, String fileRoute) {
-		int numReemplacos = 0;
-		File fitxer = new File(fileRoute);
-		String textFitxer = retornaString(fitxer);
+//	private static int reemplacaParaules(String paraula, String reemplac, String rutaFitxer) {
+//		int numReemplacos = 0;
+//		File fitxer = new File(rutaFitxer);
+//		String textFitxer = retornaString(fitxer);
+//
+//		if (textFitxer.isEmpty())
+//			return 0;
+//
+//		numReemplacos = getExtensioFitxer(fitxer).equals(".pdf") ? 0 : trobaParaula(paraula, rutaFitxer, true, true);
+//
+//		if (numReemplacos != 0) {
+//			textFitxer = textFitxer.replaceAll(paraula, reemplac);
+//			escriuModFitxer(rutaFitxer, textFitxer);
+//		}
+//
+//		return numReemplacos;
+//	}
 
-		if (textFitxer.isEmpty())
+	private static int reemplacaParaulesFinal(String paraula, String reemplac, String rutaFitxer, boolean caseSensitive,
+			boolean respAccents) {
+		int numReemplacos = 0;
+		File fitxer = new File(rutaFitxer);
+		String textFitxerOriginal = retornaString(fitxer);
+
+		if (textFitxerOriginal.isEmpty())
 			return 0;
 
-		numReemplacos = getExtensioFitxer(fitxer).equals(".pdf") ? 0 : trobaParaula(paraula, fileRoute, true, true);
+		String textModificat = textFitxerOriginal;
 
-		if (numReemplacos != 0) {
-			textFitxer = textFitxer.replaceAll(paraula, reemplac);
-			escriuFitxer(fileRoute, textFitxer);
+		if (!caseSensitive) {
+			textModificat = textModificat.toLowerCase();
+			paraula = paraula.toLowerCase();
+		}
+
+		if (!respAccents) {
+			textModificat = llevaAccents(textModificat);
+			paraula = llevaAccents(paraula);
+		}
+
+		if (textFitxerOriginal.equals(textModificat)) {
+			numReemplacos = getExtensioFitxer(fitxer).equals(".pdf") ? 0
+					: trobaParaula(paraula, rutaFitxer, true, true);
+			
+			if (numReemplacos != 0) {
+				textModificat = textModificat.replaceAll(paraula, reemplac);
+				escriuModFitxer(rutaFitxer, textModificat);
+			}
+			
+		} else {
+			numReemplacos = getExtensioFitxer(fitxer).equals(".pdf") ? 0
+					: trobaParaula(paraula, rutaFitxer, caseSensitive, respAccents);
+			
+			if (numReemplacos != 0) {
+				int indexCoincidencia = textModificat.indexOf(paraula);
+				
+				while (indexCoincidencia != -1) {
+					textFitxerOriginal = textFitxerOriginal.substring(0, indexCoincidencia) + reemplac
+							+ textFitxerOriginal.substring(indexCoincidencia + paraula.length());
+					
+					textModificat = textModificat.replaceFirst(paraula, reemplac);
+					
+					indexCoincidencia = textModificat.indexOf(paraula);
+				}
+				escriuModFitxer(rutaFitxer, textFitxerOriginal);
+			}
+
 		}
 
 		return numReemplacos;
@@ -193,7 +246,7 @@ public class Model {
 		return textFitxer;
 	}
 
-	private static boolean escriuFitxer(String rutaFitxer, String textFitxer) {
+	private static boolean escriuModFitxer(String rutaFitxer, String textFitxer) {
 		boolean fitxerEscrit = true;
 		try {
 			FileWriter fw = new FileWriter(rutaFitxer.substring(0, rutaFitxer.lastIndexOf("\\") + 1) + "MOD_"

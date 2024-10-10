@@ -59,7 +59,8 @@ public class Controlador {
 					JOptionPane.showMessageDialog(null, "El directori introduït no existix", "ACTION BUTTON SEARCH",
 							JOptionPane.INFORMATION_MESSAGE);
 				} else {
-					vista.getTxaMostraSubfitxers().setText(model.getReemplacosFitxers(rutaDir, paraula, parReemplacar));
+					vista.getTxaMostraSubfitxers().setText(model.getReemplacosFitxers(rutaDir, paraula, parReemplacar,
+							vista.getChkRespectarMajus().isSelected(), vista.getChkRespectarAccents().isSelected()));
 				}
 			}
 		});
